@@ -14,7 +14,7 @@ grippe, typhoide) a partir des symptomes du patient.
 - `notebooks/` : Scripts d'exploration
 
 ## Auteur
-Fatou Seck - L2 GLSI - ESP/UCAD
+Fatou Seck - L2 GLSI-A - ESP/UCAD
 
 ## Cours
 Integration de Modeles IA - Dr. El Hadji Bassirou TOURE
