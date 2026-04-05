@@ -1,0 +1,17 @@
+Exercice 3 - Reflexion : Difficultes avec de vraies donnees de sante au Senegal
+
+1. Qualite des donnees :
+Dans les structures de sante au Senegal, beaucoup de donnees sont encore saisies
+manuellement sur papier. Cela entraine des erreurs de saisie, des donnees manquantes
+ou incompletes, ce qui rend difficile l'entrainement d'un modele ML fiable.
+
+2. Vie privee et confidentialite :
+Les donnees medicales sont tres sensibles. Il faut respecter la confidentialite
+des patients et obtenir leur consentement avant d'utiliser leurs donnees.
+Au Senegal, la loi sur la protection des donnees personnelles encadre cela.
+
+3. Representativite :
+Notre dataset contient 500 patients fictifs de 10 regions, mais en realite
+certaines regions rurales sont sous-representees. Un modele entraine sur des
+donnees de Dakar risque de mal fonctionner pour des patients de zones rurales
+comme Kedougou ou Matam.
