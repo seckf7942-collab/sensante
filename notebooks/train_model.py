@@ -135,3 +135,70 @@ print(f"\nProbabilites par classe :")
 for classe, proba in zip(model_loaded.classes_, probas):
     bar = '#' * int(proba * 30)
     print(f"  {classe:12s} : {proba:.1%} {bar}")
+
+# ============================================================
+# EXERCICE 1 : Importance des features
+# ============================================================
+print("\n--- Importance des features ---")
+importances = model.feature_importances_
+for name, imp in sorted(zip(feature_cols, importances),
+                        key=lambda x: x[1], reverse=True):
+    bar = '█' * int(imp * 50)
+    print(f"  {name:20s} : {imp:.3f} {bar}")    
+
+# ============================================================
+# EXERCICE 2 : Tester 3 patients fictifs
+# ============================================================
+patients_test = [
+    {
+        'nom': 'Jeune sans symptomes',
+        'age': 19, 'sexe': 'M', 'temperature': 37.0,
+        'tension_sys': 120, 'toux': False, 'fatigue': False,
+        'maux_tete': False, 'frissons': False, 'nausee': False,
+        'region': 'Dakar'
+    },
+    {
+        'nom': 'Adulte forte fievre',
+        'age': 35, 'sexe': 'F', 'temperature': 40.5,
+        'tension_sys': 95, 'toux': False, 'fatigue': True,
+        'maux_tete': True, 'frissons': True, 'nausee': True,
+        'region': 'Thiès'
+    },
+    {
+        'nom': 'Patient age avec toux',
+        'age': 68, 'sexe': 'M', 'temperature': 38.8,
+        'tension_sys': 140, 'toux': True, 'fatigue': True,
+        'maux_tete': False, 'frissons': False, 'nausee': False,
+        'region': 'Saint-Louis'
+    }
+]
+
+print("\n--- Exercice 2 : 3 patients fictifs ---")
+for p in patients_test:
+    sexe_enc   = le_sexe_loaded.transform([p['sexe']])[0]
+    region_enc = le_region_loaded.transform([p['region']])[0]
+
+    features_df = pd.DataFrame([[
+        p['age'], sexe_enc, p['temperature'], p['tension_sys'],
+        int(p['toux']), int(p['fatigue']), int(p['maux_tete']),
+        int(p['frissons']), int(p['nausee']), region_enc
+    ]], columns=feature_cols)
+
+    diagnostic = model_loaded.predict(features_df)[0]
+    probas     = model_loaded.predict_proba(features_df)[0]
+    proba_max  = probas.max()
+
+    print(f"\n  Patient : {p['nom']} ({p['sexe']}, {p['age']} ans, {p['temperature']}°C)")
+    print(f"  Diagnostic : {diagnostic} ({proba_max:.1%})")
+    for classe, proba in zip(model_loaded.classes_, probas):
+        bar = '█' * int(proba * 20)
+        print(f"    {classe:12s} : {proba:.1%} {bar}")    
+
+# ============================================================
+# EXERCICE 3 : Reflexion
+# ============================================================
+# 78% d'accuracy n'est pas suffisant en contexte medical reel.
+# Cela signifie 22 erreurs sur 100 patients.
+# Un faux negatif (paludisme non detecte) peut etre fatal.
+# Un faux positif entraine des traitements inutiles et couteux.
+# Ce modele doit rester un outil d'aide, jamais un substitut au medecin.        
